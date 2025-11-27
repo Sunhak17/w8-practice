@@ -3,52 +3,41 @@ import 'data/jokes.dart';
 
 Color appColor = Colors.green[300] as Color;
 
-void main() => runApp(MaterialApp(
-    home: FavoriteJokesApp(),
-  )
-);
+void main() => runApp(MaterialApp(home: FavoriteJokesApp()));
 
 class FavoriteJokesApp extends StatefulWidget {
-  const FavoriteJokesApp({
-    super.key,
-  });
+  const FavoriteJokesApp({super.key});
 
   @override
   State<FavoriteJokesApp> createState() => _FavoriteJokesAppState();
 }
 
 class _FavoriteJokesAppState extends State<FavoriteJokesApp> {
-
   void onFavoriteClick(int index) {
     setState(() {
-      for (int i = 0; i < jokes.length; i++) {
-        if (i == index) {
-          jokes[i].isFavorite = !jokes[i].isFavorite; 
-        } else {
-          jokes[i].isFavorite = false; 
-        }
-      }    
-   });
+      for (var joke in jokes) {
+        joke.isFavorite = false;
+      }
+      jokes[index].isFavorite = true;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home:Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: appColor,
-          title: const Text("Favorite Jokes"),
-        ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: appColor,
+        title: const Text("Favorite Jokes"),
+      ),
       body: ListView.builder(
-          itemCount: jokes.length,
-          itemBuilder: (context, index) {
-            return FavoriteCard(
-              jokes: jokes[index],
-              onFavoriteClick: () => onFavoriteClick(index),
-            );
-          },
-        ),
+        itemCount: jokes.length,
+        itemBuilder: (context, index) {
+          return FavoriteCard(
+            jokes: jokes[index],
+            onFavoriteClick: () => onFavoriteClick(index),
+          );
+        },
       ),
     );
   }
@@ -63,14 +52,12 @@ class FavoriteCard extends StatelessWidget {
     required this.jokes,
     required this.onFavoriteClick,
   });
- 
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(width: .5, color: Colors.grey),
-        ),
+        border: Border(bottom: BorderSide(width: .5, color: Colors.grey)),
       ),
       padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
       child: Row(
@@ -84,7 +71,9 @@ class FavoriteCard extends StatelessWidget {
                 Text(
                   jokes.title,
                   style: TextStyle(
-                      color: appColor, fontWeight: FontWeight.w800),
+                    color: appColor,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
                 const SizedBox(height: 10.0),
                 Text(jokes.description),
